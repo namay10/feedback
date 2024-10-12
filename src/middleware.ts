@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-export { default } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
-export async function middleware(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req: req });
+export { default } from "next-auth/middleware";
+
+export async function middleware(req: NextRequest) {
+  // Extract token using getToken from next-auth
+  const token = await getToken({ req });
+
   const url = req.nextUrl;
+
+  // If token exists and user is trying to access public routes, redirect them to the dashboard
   if (
     token &&
     (url.pathname.startsWith("/sign-in") ||
@@ -15,9 +19,16 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  return NextResponse.redirect(new URL("/home", req.url));
+  // If no token and user tries to access protected routes like "/dashboard", redirect to sign-in page
+  if (!token && url.pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
+  }
+
+  // Allow all other requests to pass through
+  return NextResponse.next();
 }
 
+// Define the routes that the middleware should match
 export const config = {
   matcher: ["/sign-in", "/sign-up", "/", "/dashboard/:path*", "/verify/:path*"],
 };
