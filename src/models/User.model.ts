@@ -1,6 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { ContentSchema, message } from "./Content.model";
-export interface user extends Document {
+
+// Rename `user` to `User` for consistent naming
+export interface User extends Document {
   username: string;
   email: string;
   password: string;
@@ -11,7 +13,8 @@ export interface user extends Document {
   messages: message[];
 }
 
-export const UserSchema: Schema<user> = new Schema({
+// Define the schema
+export const UserSchema: Schema<User> = new Schema({
   username: {
     type: String,
     required: [true, "Username is required"],
@@ -49,9 +52,12 @@ export const UserSchema: Schema<user> = new Schema({
     required: true,
     default: true,
   },
-  messages: [ContentSchema],
+  messages: [ContentSchema], // Assuming ContentSchema is well-defined
 });
+
+// Use the same model if it already exists
 const UserModel =
-  (mongoose.models.user as mongoose.Model<user>) ||
-  mongoose.model<user>("User", UserSchema);
+  (mongoose.models.User as mongoose.Model<User>) ||
+  mongoose.model<User>("User", UserSchema);
+
 export default UserModel;
