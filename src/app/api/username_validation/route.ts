@@ -17,8 +17,10 @@ export async function GET(req: NextRequest) {
     };
     //validate with zod
     const result = UsernameQuerySchema.safeParse(queryparam);
+    console.log(result);
     if (!result.success) {
       const usernameerrors = result.error.format().username?._errors || [];
+      console.log("line23");
       return new NextResponse(
         JSON.stringify({
           message:

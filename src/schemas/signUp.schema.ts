@@ -12,7 +12,7 @@ export const userSignUpSchema = z.object({
     .min(6, "password must be atleast 6 characters long")
     .max(20, "password must be atmost 20 characters long")
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,20}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+=[\]{};':"\\|,.<>/?]{6,20}$/,
       "password must contain atleast one uppercase, one lowercase and one number"
     ),
 });
