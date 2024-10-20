@@ -5,8 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { userSignUpSchema } from "@/schemas/signUp.schema";
-import axios from "axios";
+
 import Link from "next/link";
 import {
   Form,
@@ -34,25 +33,30 @@ const signInPage = () => {
   const router = useRouter();
   const [issubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+
   const OnSubmit = async (data: z.infer<typeof signInSchema>) => {
     const result = await signIn("credentials", {
       identifier: data.identifier,
       password: data.password,
-      redirect: false,
+      redirect: false, // Ensures the function doesn’t redirect automatically
     });
+    console.log(result);
+
     if (result?.error) {
+      // Show a toast when there is an error
       toast({
         title: "Sign In failed",
         description: "Incorrect username or password",
         variant: "destructive",
       });
-    }
-    if (result?.url) {
+    } else if (result?.url) {
+      // Redirect to the dashboard if sign-in is successful
       router.replace("/dashboard");
     }
   };
+
   return (
-    <div className="flex justify-center min-h-screen items-center bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100">
+    <div className="flex justify-center min-h-screen items-center bg-gradient-to-r from-emerald-50 via-amber-50 to-rose-50">
       <div className="max-w-md w-full space-y-8 bg-white p-8 shadow-xl rounded-lg transform transition duration-300 hover:scale-105">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-700">Sign In </h1>
@@ -126,7 +130,7 @@ const signInPage = () => {
 
         <div className="text-center mt-4">
           <p className="text-gray-500">
-            Doesnt Have an Account?{" "}
+            Doesn't Have an Account?{" "}
             <Link
               href="/sign-up"
               className="text-blue-500 underline hover:text-blue-700"

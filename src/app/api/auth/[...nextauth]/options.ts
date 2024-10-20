@@ -40,6 +40,7 @@ export const authoptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
+            console.log(user);
             return user;
           } else {
             throw new Error("Password incorrect");
@@ -51,15 +52,6 @@ export const authoptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
-      if (token) {
-        session.user._id = token._id;
-        session.user.isVerified = token.isVerified;
-        session.user.isAcceptingMessages = token.isAcceptingMessages;
-        session.user.username = token.username;
-      }
-      return session;
-    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user._id?.toString();
@@ -69,9 +61,18 @@ export const authoptions: NextAuthOptions = {
       }
       return token;
     },
+    async session({ session, token }) {
+      if (token) {
+        session.user._id = token._id;
+        session.user.isVerified = token.isVerified;
+        session.user.isAcceptingMessages = token.isAcceptingMessages;
+        session.user.username = token.username;
+      }
+      return session;
+    },
   },
   pages: {
-    signIn: "/signin",
+    signIn: "/sign-in",
   },
   session: {
     strategy: "jwt",

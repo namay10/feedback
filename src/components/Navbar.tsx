@@ -16,11 +16,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 text-white shadow-lg">
+    <nav className="bg-gradient-to-r from-emerald-100 via-amber-100 to-rose-100 text-gray-800 shadow-lg">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           {/* Logo or Title */}
-          <Link href="/" className="text-2xl font-bold text-white">
+          <Link href="/" className="text-2xl font-extrabold  text-teal-800">
             Feedback
           </Link>
         </div>
@@ -29,11 +29,11 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-6 items-center">
           {session ? (
             <>
-              <span className="text-white font-semibold">
+              <span className="text-gray-700 font-semibold">
                 Welcome {user.username || user.email}
               </span>
               <Button
-                className="bg-white text-blue-600 hover:bg-gray-100 transition-colors"
+                className="bg-teal-600 text-white hover:bg-teal-700 transition-colors px-4 py-2 rounded-md"
                 onClick={() => signOut()}
               >
                 Sign Out
@@ -41,11 +41,11 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link href="/sign-in" className="hover:underline">
-                Sign In
+              <Link href="/sign-up" className="hover:underline text-gray-700">
+                Sign Up
               </Link>
-              <Button className="bg-white text-blue-600 hover:bg-gray-100 transition-colors">
-                Login
+              <Button className="bg-teal-600 text-white hover:bg-teal-700 transition-colors px-4 py-2 rounded-md">
+                <Link href={"/sign-in"}>Login</Link>
               </Button>
             </>
           )}
@@ -54,7 +54,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
-            className="text-white focus:outline-none"
+            className="text-gray-700 focus:outline-none"
             onClick={toggleMobileMenu}
           >
             <Menu className="h-6 w-6" />
@@ -64,15 +64,15 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-blue-500">
+        <div className="md:hidden bg-gradient-to-r from-emerald-100 via-amber-100 to-rose-100 shadow-lg">
           <div className="space-y-4 px-4 py-4">
             {session ? (
               <>
-                <span className="block text-white font-semibold">
+                <span className="block text-gray-700 font-semibold">
                   Welcome {user.username || user.email}
                 </span>
                 <Button
-                  className="bg-white text-blue-600 w-full hover:bg-gray-100 transition-colors"
+                  className="bg-teal-600 text-white w-full hover:bg-teal-700 transition-colors px-4 py-2 rounded-md"
                   onClick={() => signOut()}
                 >
                   Sign Out
@@ -80,11 +80,11 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/sign-in" className="block text-white">
-                  Sign In
+                <Link href="/sign-up" className="block text-gray-700">
+                  Sign Up
                 </Link>
-                <Button className="bg-white text-blue-600 w-full hover:bg-gray-100 transition-colors">
-                  Login
+                <Button className="bg-teal-600 text-white w-full hover:bg-teal-700 transition-colors px-4 py-2 rounded-md">
+                  <Link href={"/sign-in"}>Login</Link>
                 </Button>
               </>
             )}

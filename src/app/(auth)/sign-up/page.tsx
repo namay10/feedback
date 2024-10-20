@@ -82,7 +82,7 @@ const page = () => {
   };
 
   return (
-    <div className="flex justify-center min-h-screen items-center bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100">
+    <div className="flex justify-center min-h-screen items-center bg-gradient-to-r from-emerald-50 via-amber-50 to-rose-50">
       <div className="max-w-md w-full space-y-8 bg-white p-8 shadow-xl rounded-lg transform transition duration-300 hover:scale-105">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-700">Join the Project</h1>
@@ -113,24 +113,42 @@ const page = () => {
                         <span className="absolute inset-y-0 right-3 flex items-center">
                           <Loader2 className="animate-spin text-blue-400 h-5 w-5" />
                         </span>
-                      ) : usernamemessage === "Username is available" ? (
+                      ) : (
                         <span className="absolute inset-y-0 right-3 flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="2"
-                            stroke="green"
-                            className="h-6 w-6 bg-green-100 text-green-500 rounded-full p-1"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                          {usernamemessage === "Username is available" ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="2"
+                              stroke="green"
+                              className="h-6 w-6 bg-green-100 text-green-500 rounded-full p-1"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          ) : usernamemessage ===
+                            "Username is already taken" ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="2"
+                              stroke="red"
+                              className="h-6 w-6 bg-red-100 text-red-500 rounded-full p-1"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          ) : null}
                         </span>
-                      ) : null}
+                      )}
                     </div>
                   </FormControl>
                   <FormMessage />
