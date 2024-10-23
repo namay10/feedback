@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
   await dbConect();
   const session = await getServerSession(authoptions);
   const user: User = session?.user as User;
+
   if (!session || !user) {
     return new NextResponse(
       JSON.stringify({
@@ -19,13 +20,14 @@ export async function POST(req: NextRequest) {
     );
   }
   const userid = user._id;
-  const { acceptmessages } = await req.json();
+  const { acceptMessages } = await req.json();
   try {
     const updateduser = await UserModel.findByIdAndUpdate(
       userid,
-      { isAcceptingMessages: acceptmessages },
+      { isAcceptingMessages: acceptMessages },
       { new: true }
     );
+
     if (!updateduser) {
       return new NextResponse(
         JSON.stringify({
@@ -69,6 +71,7 @@ export async function GET(req: NextRequest) {
     );
   }
   const userid = user._id;
+  console.log("userid", userid);
   try {
     const founduser = await UserModel.findById(userid);
     if (!founduser) {

@@ -19,18 +19,20 @@ export async function GET(req: NextRequest) {
       { status: 401 }
     );
   }
-  const userId = new mongoose.Types.ObjectId(user._id);
+  // const userId = new mongoose.Types.ObjectId(user._id);
+  const userId = user._id;
   try {
     const user = await UserModel.aggregate([
       { $match: { _id: userId } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
-      { $group: { _id: "$id", messages: { $push: "$messages" } } },
-    ]);
+      { $group: { _id: "$_id", messages: { $push: "$messages" } } },
+    ]).exec();
+    console.log("user", user);
     if (!user || user.length === 0) {
       return new NextResponse(
         JSON.stringify({
-          message: "User not found",
+          message: "User Not Found",
           success: false,
         }),
         { status: 401 }

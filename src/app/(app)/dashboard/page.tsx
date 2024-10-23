@@ -33,7 +33,7 @@ const Page = () => {
   const fetchAccept = useCallback(async () => {
     setIsSwitchLoading(true);
     try {
-      const response = await axios.get("/api/accept-messages");
+      const response = await axios.get("/api/acceptmessage");
       setValue("acceptMessages", response.data.isAcceptingMessages);
     } catch (error) {
       toast({
@@ -50,7 +50,7 @@ const Page = () => {
     async (refresh: boolean = false) => {
       setIsLoading(true);
       try {
-        const response = await axios.get("/api/get-messages");
+        const response = await axios.get("/api/getmessage");
         setMessages(response.data.messages || []);
         if (refresh) {
           toast({
@@ -79,7 +79,7 @@ const Page = () => {
 
   const handleSwitchChange = async () => {
     try {
-      const response = await axios.post("/api/accept-messages", {
+      const response = await axios.post("/api/acceptmessage", {
         acceptMessages: !acceptMessages,
       });
       setValue("acceptMessages", !acceptMessages);
@@ -102,7 +102,10 @@ const Page = () => {
     );
   };
 
-  const { username } = session?.user as User;
+  const username = session?.user?.username;
+  if (!username) {
+    return <div>Please Login</div>;
+  }
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/x/${username}`;
 

@@ -35,13 +35,14 @@ const signInPage = () => {
   const { toast } = useToast();
 
   const OnSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true);
     const result = await signIn("credentials", {
       identifier: data.identifier,
       password: data.password,
       redirect: false, // Ensures the function doesn’t redirect automatically
     });
     console.log(result);
-
+    setIsSubmitting(false);
     if (result?.error) {
       // Show a toast when there is an error
       toast({
@@ -49,7 +50,13 @@ const signInPage = () => {
         description: "Incorrect username or password",
         variant: "destructive",
       });
-    } else if (result?.url) {
+    }
+    if (result?.url) {
+      toast({
+        title: "Success",
+        description: "Successfully signed in",
+        variant: "default",
+      });
       // Redirect to the dashboard if sign-in is successful
       router.replace("/dashboard");
     }

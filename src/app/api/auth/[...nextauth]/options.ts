@@ -8,12 +8,12 @@ import Email from "next-auth/providers/email";
 export const authoptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "Credentials",
-      name: "Credentials",
+      id: "credentials",
+      name: "credentials",
       credentials: {
         email: {
           label: "Email",
-          type: "email",
+          type: "text",
         },
         password: {
           label: "Password",
@@ -25,8 +25,8 @@ export const authoptions: NextAuthOptions = {
         try {
           const user = await UserModel.findOne({
             $or: [
-              { username: credentials.identifier.username },
-              { email: credentials.identifier.email },
+              { username: credentials.identifier },
+              { email: credentials.identifier },
             ],
           });
           if (!user) {
