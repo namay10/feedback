@@ -19,8 +19,8 @@ export async function GET(req: NextRequest) {
       { status: 401 }
     );
   }
-  // const userId = new mongoose.Types.ObjectId(user._id);
-  const userId = user._id;
+  const userId = new mongoose.Types.ObjectId(user._id);
+  //const userId = user._id;
   try {
     const user = await UserModel.aggregate([
       { $match: { _id: userId } },

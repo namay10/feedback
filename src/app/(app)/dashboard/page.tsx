@@ -9,12 +9,12 @@ import { useToast } from "@/hooks/use-toast";
 import { acceptMessageSchema } from "@/schemas/acceptMessage.schema";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { User } from "next-auth";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCcw } from "lucide-react";
 import MessageCard from "@/components/MessageCard";
+import { Box, CircularProgress } from "@mui/material";
 
 const Page = () => {
   const [messages, setMessages] = useState([] as message[]);
@@ -51,7 +51,7 @@ const Page = () => {
       setIsLoading(true);
       try {
         const response = await axios.get("/api/getmessage");
-        setMessages(response.data.messages || []);
+        setMessages(response.data.message || []);
         if (refresh) {
           toast({
             title: "Refreshed Messages",
@@ -104,7 +104,21 @@ const Page = () => {
 
   const username = session?.user?.username;
   if (!username) {
-    return <div>Please Login</div>;
+    return (
+      <div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "top",
+            marginTop: "10vh",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </div>
+    );
   }
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/x/${username}`;
@@ -126,12 +140,14 @@ const Page = () => {
   }
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4 text-center">User Dashboard</h1>
+    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-gray-50 shadow-md rounded-lg w-full max-w-6xl">
+      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">
+        User Dashboard
+      </h1>
 
       {/* Profile Link Section */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">
+      <div className="mb-8 p-4 bg-white shadow rounded-md">
+        <h2 className="text-xl font-semibold mb-4 text-gray-700">
           Copy Your Unique Profile Link
         </h2>
         <div className="flex flex-col md:flex-row items-center gap-4">
@@ -139,36 +155,47 @@ const Page = () => {
             type="text"
             value={profileUrl}
             disabled
-            className="input input-bordered w-full p-2"
+            className="input input-bordered w-full p-2 bg-gray-200 rounded-md"
           />
-          <Button onClick={copyToClipboard} className="w-full md:w-auto">
+          <Button
+            onClick={copyToClipboard}
+            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+          >
             Copy Link
           </Button>
         </div>
       </div>
 
       {/* Accept Messages Switch */}
-      <div className="mb-6 flex items-center">
-        <h2 className="text-lg font-semibold mb-2">Message Settings</h2>
-        <div className="flex items-center ml-4">
-          <Switch
-            {...register("acceptMessages")}
-            checked={acceptMessages}
-            onCheckedChange={handleSwitchChange}
-            disabled={isSwitchLoading}
-          />
-          <span className="ml-2">
-            Accept Messages: <strong>{acceptMessages ? "On" : "Off"}</strong>
-          </span>
+      <div className="mb-6 p-4 bg-white shadow rounded-md">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-gray-700">
+            Message Settings
+          </h2>
+          <div className="flex items-center">
+            <Switch
+              {...register("acceptMessages")}
+              checked={acceptMessages}
+              onCheckedChange={handleSwitchChange}
+              disabled={isSwitchLoading}
+              className="mr-2"
+            />
+            <span className="text-gray-600">
+              Accept Messages:{" "}
+              <strong className="text-gray-800">
+                {acceptMessages ? "On" : "Off"}
+              </strong>
+            </span>
+          </div>
         </div>
       </div>
 
-      <Separator />
+      <Separator className="my-8" />
 
       {/* Refresh Messages Button */}
-      <div className="mt-6 flex justify-end">
+      <div className="flex justify-end">
         <Button
-          className="mt-4 flex items-center gap-2"
+          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
           variant="outline"
           onClick={(e) => {
             e.preventDefault();
@@ -185,7 +212,7 @@ const Page = () => {
       </div>
 
       {/* Message Cards */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {messages.length > 0 ? (
           messages.map((message) => (
             <MessageCard
@@ -195,7 +222,9 @@ const Page = () => {
             />
           ))
         ) : (
-          <p className="text-center col-span-full">No messages to display.</p>
+          <p className="text-center text-gray-600 col-span-full">
+            No messages to display.
+          </p>
         )}
       </div>
     </div>

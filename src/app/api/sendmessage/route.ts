@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   await dbConect();
 
-  const { username, content } = await req.json();
+  const { username, message: content } = await req.json();
   try {
     const user = await UserModel.findOne({ username });
     if (!user) {

@@ -40,7 +40,6 @@ export const authoptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
-            console.log(user);
             return user;
           } else {
             throw new Error("Password incorrect");
@@ -53,8 +52,9 @@ export const authoptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log("user", user);
       if (user) {
-        token.id = user._id?.toString();
+        token._id = user._id?.toString();
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;
         token.username = user.username;

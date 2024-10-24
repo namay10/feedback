@@ -83,10 +83,10 @@ const page = () => {
 
   return (
     <div className="flex justify-center min-h-screen items-center bg-gradient-to-r from-emerald-50 via-amber-50 to-rose-50">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 shadow-xl rounded-lg transform transition duration-300 hover:scale-105">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 shadow-xl rounded-xl ">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-700">Join the Project</h1>
-          <p className="text-gray-500">Sign up to start your journey.</p>
+          <h1 className="text-3xl font-extrabold text-gray-700">Join Us</h1>
+          <p className="text-gray-500">Sign up to recieve Anonymous Feedback</p>
         </div>
 
         <Form {...form}>

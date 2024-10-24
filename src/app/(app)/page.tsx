@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "@/components/logo_feedback.png";
 export default function About() {
   const router = useRouter();
 
@@ -26,7 +27,7 @@ export default function About() {
       <section className="w-full md:w-2/3 flex justify-center mt-8 md:mt-0">
         <div className="bg-white shadow-lg shadow-gray-400 rounded-3xl p-6 flex flex-col items-center justify-center">
           <Image
-            src="/feedback_illustration.svg" // Add your image path here
+            src={logo} // Add your image path here
             alt="Feedback Illustration"
             width={400}
             height={300}

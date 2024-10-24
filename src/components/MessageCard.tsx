@@ -24,11 +24,7 @@ import { message } from "@/models/Content.model";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
-
-// Define the shape of the response you expect from the delete API
-interface DeleteMessageResponse {
-  message: string;
-}
+import dayjs from "dayjs";
 
 type MessageCardProps = {
   message: message;
@@ -40,13 +36,12 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
 
   const handleDeleteConfirm = async () => {
     try {
-      // Explicitly define the type of the response
       const response = await axios.delete<ApiResponse>(
         `/api/delete-message/${message._id}`
       );
       toast({
         title: "Message deleted",
-        description: response.data.message, // No more type errors
+        description: response.data.message,
       });
       onMessageDelete(message._id as string);
     } catch (error) {
@@ -59,44 +54,43 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   };
 
   return (
-    <Card className="mb-4 shadow-md">
-      <CardHeader className="flex justify-between items-start">
-        <div>
-          <CardTitle></CardTitle>
-          <CardDescription></CardDescription>
+    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <CardHeader className="bg-blue-50 p-4 rounded-t-md">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-lg font-semibold text-gray-800">
+            Message
+          </CardTitle>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" className="rounded-xl">
+                <X size={38} />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your message.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-red-600 hover:bg-red-700"
+                  onClick={handleDeleteConfirm}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
-
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive" size="icon">
-              <X className="h-4 w-4" />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. Once you delete this message, it
-                will be permanently removed from the server.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteConfirm}>
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div className="text-sm text-gray-500 mt-2">
+          {dayjs(message.createdAt).format("MMM D, YYYY h:mm A")}
+        </div>
       </CardHeader>
-
-      <CardContent>
-        <p>{message.content || "No content available."}</p>
-      </CardContent>
-
-      <CardFooter>
-        <p></p>
-      </CardFooter>
+      <CardContent className="p-4 text-gray-700">{message.content}</CardContent>
     </Card>
   );
 };
